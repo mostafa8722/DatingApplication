@@ -250,7 +250,11 @@ class SignUpView extends GetView<SignUpController> implements SignUpViewInterfac
 
   @override
   Widget image() {
-    return Image.asset(Res.logo,height: 120,width: 120,);
+    return    CircleAvatar(
+      radius: 120, // Image radius
+      backgroundImage:AssetImage((Res.logo)
+      ),);
+
   }
 
 

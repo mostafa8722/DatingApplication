@@ -28,8 +28,13 @@ class SplashView extends GetView<SplashController> implements SplashViewInterfac
   Widget body(BuildContext context) {
     return SafeArea(child:
         Center(
-          child: Image.asset(Res.logo,width: MediaQuery.of(context).size.width/2,),
-        )
-    );
+          child:
+          CircleAvatar(
+            radius:  MediaQuery.of(context).size.width/3, // Image radius
+            backgroundImage:AssetImage((Res.logo)
+            ),),
+            )
+        );
+
   }
 }
