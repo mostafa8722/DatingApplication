@@ -32,7 +32,7 @@ BottomNavigationBarItem bottomNavigationItem(
 var items = <BottomNavigationBarItem>[
   bottomNavigationItem(Icons.home, MyText.home.value, true),
   bottomNavigationItem(Icons.map_rounded, MyText.maps.value, true),
-  bottomNavigationItem(Icons.heart_broken_rounded, MyText.actions.value, true),
+  bottomNavigationItem(Icons.favorite_sharp, MyText.actions.value, true),
   bottomNavigationItem(Icons.chat, MyText.chats.value, true),
   bottomNavigationItem(Icons.person, MyText.profiles.value, true),
 ];
