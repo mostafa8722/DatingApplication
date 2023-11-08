@@ -1,4 +1,5 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,7 +21,7 @@ class HomeView extends GetView<HomeController> implements HomeViewInterface {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white, body: SafeArea(child: body()));
+        backgroundColor: Colors.white, body: SafeArea(child: body(context)));
   }
 
   @override
@@ -32,7 +33,7 @@ class HomeView extends GetView<HomeController> implements HomeViewInterface {
   }
 
   @override
-  Widget body() {
+  Widget body(BuildContext context) {
     return Column(
       children: [
         const TransparentDivider(
@@ -49,7 +50,7 @@ class HomeView extends GetView<HomeController> implements HomeViewInterface {
           height: 16.0,
         ),
         Expanded(
-          child: slider(),
+          child: slider(context),
         ),
         const TransparentDivider(
           height: 24.0,
@@ -59,7 +60,7 @@ class HomeView extends GetView<HomeController> implements HomeViewInterface {
   }
 
   @override
-  Widget slider() {
+  Widget slider(BuildContext context) {
     List<SinglePeople> list;
     return Obx(() {
       if(controller.showSearchList.value){
@@ -133,7 +134,69 @@ class HomeView extends GetView<HomeController> implements HomeViewInterface {
                                 controller.like(element);
                               },
                               onClickCall: () {
-                                controller.call(element);
+
+
+                                showDialog<void>(
+
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      content:    Container(
+
+                                        color: Colors.white,
+                                        padding: EdgeInsets.symmetric(vertical: 15,horizontal: 5),
+
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            GestureDetector(
+                                              onTap: (){
+                                                controller.call(element);
+                                              },
+                                              child:  Row(children: [
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Icon(Icons.phone),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text("Phone Call"),
+                                              ],) ,
+
+                                            ),
+                                            SizedBox(height: 20,),
+                                            Divider(height: 10,color: Color(0xffeeeeee)),
+                                            SizedBox(height: 20,),
+                                            GestureDetector(
+                                              onTap: (){
+                                                controller.call(element);
+                                              },
+                                              child:  Row(children: [
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Icon(Icons.videocam_sharp),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text("Video  Call"),
+                                              ],) ,
+
+                                            )
+
+
+                                          ],
+                                        ),
+                                      ),
+                                    );
+
+                                  },
+                                );
                               },
                               onClickChat: () {
                                 controller.chat(element);

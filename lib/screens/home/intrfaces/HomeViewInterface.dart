@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 abstract class HomeViewInterface{
   Widget appbar();
-  Widget body();
-  Widget slider();
+  Widget body(BuildContext context);
+  Widget slider(BuildContext context);
   Widget sliderIndicator();
 }

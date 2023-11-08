@@ -61,10 +61,18 @@ Widget actionListItem({
           children: [
             AspectRatio(
                 aspectRatio: 1,
-                child: Image.network(
-                  image.toString(),
-                  fit: BoxFit.cover,
-                )),
+
+                child:
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: Image.network(
+                    image.toString(),
+                    fit: BoxFit.cover,
+                  ),
+                )
+                )
+
+              ,
             const VerticalTransparentDivider(
               width: 8,
             ),
@@ -75,7 +83,7 @@ Widget actionListItem({
               children: [
                 Text(name != null && name != "null" ? name.toString() : "",
                     style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 15)),
+                        fontWeight: FontWeight.bold, fontSize: 15,overflow: TextOverflow.ellipsis)),
                 Text(
                     description != null && name != "null"
                         ? description.toString()
