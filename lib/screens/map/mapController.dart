@@ -20,13 +20,16 @@ import 'interfaces/mapControllerInterface.dart';
 
 class MapController extends BaseController implements MapControllerInterface {
   final PeopleRepository _peopleRepository = PeopleRepository();
-  Completer<GoogleMapController> mapController = Completer();
+
+  static final Completer<GoogleMapController> mapController = Completer<GoogleMapController>();
+  var lat="".obs;
+  var lng ="".obs;
   LatLng centerPosition = LatLng(29.597717, 52.572204);
   RxSet<Marker> markers = <Marker>{}.obs;
   RxList<MarkerData> markersWidget = <MarkerData>[].obs;
   var kGooglePlex = CameraPosition(
     target: LatLng(29.597717, 52.572204),
-    zoom: 14.4746,
+    zoom: 14,
   ).obs;
 
   var peoples = <SinglePeople>[].obs;
@@ -41,6 +44,7 @@ class MapController extends BaseController implements MapControllerInterface {
     );
     markers.add(v);
     getDate();
+    currentLocation();
     super.onInit();
   }
 
@@ -51,15 +55,18 @@ class MapController extends BaseController implements MapControllerInterface {
       "lng":centerPosition.longitude
     };
     loading.value = true;
+    printLog("data22200");
     _peopleRepository.index(
         success: (data) {
           loading.value = false;
+          printLog("data222");
           printLog(data);
           var responseModel = responseFromJson(data.toString());
           peoples.value = (responseModel.data as List).map((item) => SinglePeople.fromJson(item)).toList();
           addMarker();
         },
         failure: (error) {
+          printLog("data22244");
           printLog("error #h1:");
           printLog(error);
           loading.value = false;
@@ -112,21 +119,28 @@ class MapController extends BaseController implements MapControllerInterface {
 
 
   void currentLocation() async {
-    GoogleMapController controller = await mapController.future;
+
+   GoogleMapController controller = await mapController.future;
+
     LocationData currentLocation;
+
     var location = Location();
+
     try {
       currentLocation = await location.getLocation();
-      double? lat = currentLocation.latitude;
-      double? lng = currentLocation.longitude;
-      controller.animateCamera(CameraUpdate.newCameraPosition(
+
+
+ controller.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
           bearing: 0,
-          target: LatLng(lat!, lng!),
-          zoom: 17.0,
+          target: LatLng(currentLocation.latitude!, currentLocation.longitude!),
+          zoom: 14.0,
         ),
       ));
-    } on Exception {}
+    } catch(e) {
+
+      print(e);
+    }
   }
 }
 

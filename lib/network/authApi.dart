@@ -7,9 +7,7 @@ import '../utils/header.dart';
 class AuthApi extends BaseNetwork {
   Future<Response> login(Map<String, dynamic>? body)
       {
-        print("dddddd");
-        print(body);
-        print(body.toString());
+
         return  dio.post('/auth/login', data: body);
       }
 

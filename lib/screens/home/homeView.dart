@@ -1,4 +1,5 @@
 
+import 'package:Lover369/widgets/error_connection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,8 +35,13 @@ class HomeView extends GetView<HomeController> implements HomeViewInterface {
 
   @override
   Widget body(BuildContext context) {
-    return Column(
-      children: [
+    return
+      Obx(()=>Column(mainAxisAlignment: MainAxisAlignment.center,
+
+      children:   controller.showInternetConnection.value?[
+        ErrorConnection(controller.retryConnection,true)
+
+      ]: [
         const TransparentDivider(
           height: 8.0,
         ),
@@ -43,12 +49,14 @@ class HomeView extends GetView<HomeController> implements HomeViewInterface {
         const TransparentDivider(
           height: 8.0,
         ),
+
         inputBox(Get.context!, controller.searchController,
             hint: "Search",
             suffixIcon: Icons.search),
         const TransparentDivider(
           height: 16.0,
         ),
+
         Expanded(
           child: slider(context),
         ),
@@ -56,7 +64,8 @@ class HomeView extends GetView<HomeController> implements HomeViewInterface {
           height: 24.0,
         )
       ],
-    ).marginSymmetric(horizontal: 16);
+    ).marginSymmetric(horizontal: 16)
+      );
   }
 
   @override
@@ -129,9 +138,9 @@ class HomeView extends GetView<HomeController> implements HomeViewInterface {
                               });
                               },
                               onClickLike: () {
-                                animationController.forward();
+                                //animationController.forward();
                                 printLog(element.target!.id!);
-                                controller.like(element);
+                               controller.like(element);
                               },
                               onClickCall: () {
 
@@ -155,8 +164,10 @@ class HomeView extends GetView<HomeController> implements HomeViewInterface {
                                           children: <Widget>[
                                             GestureDetector(
                                               onTap: (){
+                                                Navigator.of(context, rootNavigator: true).pop('dialog');
                                                 controller.call(element);
                                               },
+
                                               child:  Row(children: [
                                                 SizedBox(
                                                   width: 10,
@@ -174,7 +185,8 @@ class HomeView extends GetView<HomeController> implements HomeViewInterface {
                                             SizedBox(height: 20,),
                                             GestureDetector(
                                               onTap: (){
-                                                controller.call(element);
+                                                Navigator.of(context, rootNavigator: true).pop('dialog');
+                                                controller.video(element);
                                               },
                                               child:  Row(children: [
                                                 SizedBox(

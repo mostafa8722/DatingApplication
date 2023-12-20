@@ -12,10 +12,12 @@ const channel = "<-- Insert Channel Name -->";
 class VideoCallView extends GetView<VideoCallController> {
   const VideoCallView({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     controller.initContext(context);
     return Scaffold(
+      appBar: AppBar(),
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
@@ -57,9 +59,10 @@ class VideoCallView extends GetView<VideoCallController> {
       ));
     } else {
       return const Text(
-        'Please wait for remote user to join',
+        'Please wait for remote user to join2222222222222',
         textAlign: TextAlign.center,
       );
     }
   }
+
 }

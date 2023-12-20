@@ -250,6 +250,8 @@ class CallView extends GetView<CallController> implements CallViewInterface {
   }
 
   Widget remoteView() {
+    print("remoteUid");
+    print(controller.remoteUid.value);
     Widget widget;
     if (controller.remoteUid.value != null) {
       widget = AgoraVideoView(

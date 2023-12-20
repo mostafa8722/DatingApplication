@@ -13,6 +13,7 @@ import '../../../repositories/peopleRepository.dart';
 import '../../../utils/enums.dart';
 import '../../../utils/log.dart';
 import 'interface/callControllerInterface.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 
 class CallController extends BaseController implements CallControllerInterface {
   var appId = "<-- Insert App Id -->";
@@ -33,6 +34,7 @@ class CallController extends BaseController implements CallControllerInterface {
   int targetId = 0;
   String targetEmail = "";
   var isVideoCall = false.obs;
+  RxBool showInternetConnection = false.obs;
 
   @override
   void onInit() {
@@ -76,19 +78,35 @@ class CallController extends BaseController implements CallControllerInterface {
   @override
   void initializeSocket() async {
     appController.socket.on(BaseSocket.callChannel.endCall, (data) {
-      printLog("end call");
       Get.off(MyRoute.callRoute);
     });
 
     appController.socket.on(BaseSocket.callChannel.callRequest, (data) {
-      printLog("req call");
+
+
       Call call = Call.fromJson(data);
+      printLog(call.callInfo!.status);
+
+
       if(call.callInfo!.status == "Rejected"){
-        printLog("rejected call");
+
+        Get.back(canPop: true);
+      }
+      if(call.callInfo!.status == "Requested"){
+
+
+        FlutterRingtonePlayer.play(fromAsset: "assets/audio/internal_ring.mp3");
+      }else{
+        FlutterRingtonePlayer.stop();
+      }
+
+      if(call.callInfo!.status == "Ended"){
         Get.back(canPop: true);
       }
 
+
       if(call.callInfo!.status == "Answered"){
+
         appController.callStatus.value = CallStatus.inCall;
         targetName.value = call.callInfo!.userFullName.toString();
         targetProfile.value = call.callInfo!.userProfile.toString();
@@ -96,6 +114,7 @@ class CallController extends BaseController implements CallControllerInterface {
         channel = call.callInfo!.callChannelName.toString();
         token = call.callInfo!.targetToken.toString();
         uid = call.callInfo!.targetUid!;
+
         initializeAgora();
       }
     });
@@ -105,22 +124,24 @@ class CallController extends BaseController implements CallControllerInterface {
   void initializeAgora() async {
     // retrieve permissions
     await [Permission.microphone, Permission.camera].request();
-    printLog("accepted call1");
 
     //create the engine
     engine = createAgoraRtcEngine();
     await engine.initialize(RtcEngineContext(
       appId: appId,
-      channelProfile: ChannelProfileType.channelProfileCommunication,
+      channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
 
     ));
-    printLog("accepted call2");
+
+
 
     engine.registerEventHandler(
       RtcEngineEventHandler(
         onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
           printLog("local user ${connection.localUid} joined");
+          printLog(connection);
           localUserJoined.value = true;
+
         },
         onUserJoined: (RtcConnection connection, int _remoteUid, int _elapsed) {
           printLog("remote user $_remoteUid joined");
@@ -138,19 +159,30 @@ class CallController extends BaseController implements CallControllerInterface {
       ),
     );
 
-    await engine.setClientRole(role: ClientRoleType.clientRoleAudience);
+    await engine!.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
     await engine.enableAudio();
     await engine.enableVideo();
     await engine.startPreview();
-    printLog("accepted call3");
+
+
+
     printLog("acc: ${appId} :::${channel}:::${token}:::${uid}");
-    await engine.joinChannel(
-      token: token,
-      channelId: channel,
-      uid: uid,
-      options: const ChannelMediaOptions(),
+
+    try{
+     await engine.joinChannel(
+    token: token,
+    channelId: channel,
+    uid: uid,
+    options: const ChannelMediaOptions(),
     );
-    printLog("accepted call4");
+    }catch(e){
+      printLog("accepted call_12455");
+      print(e);
+    }
+
+
+
+
   }
 
   @override
@@ -171,6 +203,7 @@ class CallController extends BaseController implements CallControllerInterface {
   @override
   void videoCall() {
     var callObject = CallRequest(toMail: targetEmail, type: "VIDEO").toJson();
+    print("callObject");
     printLog(callObject);
     appController.socket.emit(BaseSocket.callChannel.callRequest, [callObject]);
 
@@ -179,8 +212,10 @@ class CallController extends BaseController implements CallControllerInterface {
   @override
   void voiceCall() {
     var callObject = CallRequest(toMail: targetEmail, type: "VOICE").toJson();
+    print("ddddd000");
     printLog(callObject);
     appController.socket.emit(BaseSocket.callChannel.callRequest, [callObject]);
 
+    print("ddddd000222");
   }
 }

@@ -9,10 +9,11 @@ class BaseRepository{
       if(success != null)success(response);
 
 
-      print("tttttttt",);
+
     }on DioError catch(e){
        if(failure != null)failure(e);
-      print("response2");
+      print("response23");
+      print(e.response);
       //print(e.type == DioErrorType.response);
 
     }

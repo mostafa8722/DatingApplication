@@ -23,10 +23,12 @@ class SplashController extends BaseController
   void checkState() async {
     var isSeenIntro =
         (await appStorage.getData(appStorage.seenIntroKey)) as bool?;
-    printLog("seen intro: $isSeenIntro");
+
     Future.delayed(const Duration(seconds: 2), () async {
       Token? token = await _userRepository.getToken() as Token?;
+
       if(token != null){
+
         gotoMain();
       }
       else

@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:Lover369/base/baseController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,6 +25,7 @@ class HomeController extends BaseController  with GetTickerProviderStateMixin im
   var searchedPeoples = <SinglePeople>[].obs;
   RxBool loading = false.obs;
   RxBool showSearchList = false.obs;
+  RxBool showInternetConnection = false.obs;
   final debouncer = Debouncer(milliseconds: 1000);
 
   @override
@@ -31,7 +34,7 @@ class HomeController extends BaseController  with GetTickerProviderStateMixin im
       showSearchList.value = searchController.text.isNotEmpty;
       search();
     });
-    getDate();
+    retryConnection();
     super.onInit();
   }
 
@@ -49,8 +52,13 @@ class HomeController extends BaseController  with GetTickerProviderStateMixin im
     );
   }
 
+  retryConnection()async{
+    getDate();
+
+  }
   @override
   void getDate() {
+    showInternetConnection.value = false;
     loading.value = true;
     Map<String,dynamic>  body= {
       "col":"created_at",
@@ -60,13 +68,12 @@ class HomeController extends BaseController  with GetTickerProviderStateMixin im
         body: body,
         success: (data) {
           loading.value = false;
-          printLog(data);
           var responseModel = responseFromJson(data.toString());
           peoples.value = (responseModel.data as List).map((item) => SinglePeople.fromJson(item)).toList();
         },
         failure: (error) {
-          printLog("error #h1:");
-          printLog(error);
+
+          showInternetConnection.value = true;
           loading.value = false;
         });
   }
@@ -106,11 +113,9 @@ class HomeController extends BaseController  with GetTickerProviderStateMixin im
         id:singlePeople.target!.id!,
         success: (data) {
           loading.value = false;
-          printLog(data);
         },
         failure: (error) {
-          printLog("error #h3:");
-          printLog(error);
+
           loading.value = false;
         });
   }
@@ -124,5 +129,10 @@ class HomeController extends BaseController  with GetTickerProviderStateMixin im
   void call(SinglePeople singlePeople) {
     ChatArguments chatArguments = ChatArguments.fromSinglePeople(singlePeople);
     Get.toNamed(MyRoute.callRoute,arguments: {"data":chatArguments,"type":'voice'});
+  }
+  @override
+  void video(SinglePeople singlePeople) {
+    ChatArguments chatArguments = ChatArguments.fromSinglePeople(singlePeople);
+    Get.toNamed(MyRoute.callRoute,arguments: {"data":chatArguments,"type":'video'});
   }
 }

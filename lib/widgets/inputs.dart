@@ -13,6 +13,8 @@ Widget inputBox(BuildContext context, TextEditingController controller,
     String hint = "",
     IconData? icon,
     IconData? suffixIcon,
+    Widget? suffixIconClick,
+    Widget? suffixLoading,
     double iconSize = 24,
     bool isPassword = false,
     bool hasError = false,
@@ -49,7 +51,9 @@ Widget inputBox(BuildContext context, TextEditingController controller,
                             border: InputBorder.none,
                             hintStyle: TextStyle(color: Colors.grey),
                             hintText: hint,
-                            suffixIcon: suffixIcon != null
+                            suffixIcon: suffixLoading!=null?suffixLoading:
+                          suffixIconClick!=null?suffixIconClick :
+                            suffixIcon != null
                                 ? IconTheme(
                                 data: const IconThemeData(color: Colors.black87),
                                 child: Icon(

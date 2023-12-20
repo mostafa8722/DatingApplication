@@ -1,4 +1,5 @@
 
+import 'package:Lover369/widgets/error_connection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,6 +15,7 @@ class SeenProfileView extends GetView<SeenProfileController> implements SeenProf
 
   @override
   Widget build(BuildContext context) {
+    controller.onInit();
     return Scaffold(
       body: body(context),
     );
@@ -21,7 +23,8 @@ class SeenProfileView extends GetView<SeenProfileController> implements SeenProf
 
   @override
   Widget body(BuildContext context) {
-    return Obx(() => controller.loading.value
+    return Obx(() =>controller.showInternetConnection.value?
+    ErrorConnection(controller.retryConnection): controller.loading.value
         ? circularLoading():controller.list.isNotEmpty
             ? list()
             : empty()

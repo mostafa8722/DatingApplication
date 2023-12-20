@@ -1,4 +1,5 @@
 
+import 'package:Lover369/widgets/error_connection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,6 +15,7 @@ class ContactsView extends GetView<ContactsController> implements ContactsViewIn
 
   @override
   Widget build(BuildContext context) {
+    controller.onInit();
     return Scaffold(
       body: body(context),
     );
@@ -22,6 +24,8 @@ class ContactsView extends GetView<ContactsController> implements ContactsViewIn
   @override
   Widget body(BuildContext context) {
     return Obx(() =>
+    controller.showInternetConnection.value?
+    ErrorConnection(controller.retryConnection):
     controller.loading.value
         ? circularLoading() : controller.list.isNotEmpty
         ? list()

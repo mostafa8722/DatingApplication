@@ -6,7 +6,9 @@ import '../../../../base/baseController.dart';
 class DiscoveryController extends BaseController{
   Rx<bool> expandedSearchController = false.obs;
   Rx<bool> hideLastSeenController = false.obs;
+  Rx<bool> loadingSave = false.obs;
   Rx<SfRangeValues> ageController = (SfRangeValues(18, 30)).obs;
   Rx<SfRangeValues> distanceController = (SfRangeValues(4, 60)).obs;
+
 
 }

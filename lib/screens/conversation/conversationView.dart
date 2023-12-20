@@ -1,4 +1,6 @@
 
+import 'package:Lover369/widgets/error_connection.dart';
+import 'package:Lover369/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -47,7 +49,8 @@ class ConversationView extends GetView<ConversationController> implements Conver
   Widget conversations() {
     return Obx(() {
       var list = controller.searchText.value.isEmpty ? controller.conversations:controller.filterConversations;
-        return ListView.builder(
+        return controller.showInternetConnection.value?
+        ErrorConnection(controller.retryConnection):controller.loading.value?circularLoading():ListView.builder(
             itemCount:list.length,
             itemBuilder: (context, index) {
               var conversation = list[index];

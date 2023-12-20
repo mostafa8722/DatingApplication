@@ -58,9 +58,13 @@ class PersonalInformationController extends BaseController implements PersonalIn
 
   @override
   void onSelectionBirthDate(DateTime dateTime) {
-    selectedDateTime.value = dateTime;
-  }
 
+    birthdateController.text = dateTime.toString();
+  }
+  void onSelectionBirthDate2(String dateTime) {
+
+    birthdateController.text = dateTime.toString();
+  }
   @override
   void initializeBirthDateListener() {
     selectedDateTime.listen((dateTime) {
@@ -88,6 +92,7 @@ class PersonalInformationController extends BaseController implements PersonalIn
 
   @override
   void submit() {
+    print("ttttttttt9999");
     loading.value = true;
     _userRepository.updateProfile(
         firstName: firstNameController.text ?? "",

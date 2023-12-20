@@ -20,12 +20,34 @@ class ChatRepository extends BaseRepository {
   void getConversation(
       {
         required int targetId,
+        required int page,
         Function(dynamic)? success,
         Function(DioError)? failure}) {
-    Map<String,dynamic> body = {"target_id":targetId};
+    Map<String,dynamic> body = {"target_id":targetId,"page":page};
     callApi(_chatApi.getConversation(body), success, failure);
   }
+  void getGiftList(
+      {
 
+        Function(dynamic)? success,
+        Function(DioError)? failure}) {
+    Map<String,dynamic> body = {};
+    callApi(_chatApi.getGiftList(body), success, failure);
+  }
+  void sendGift(
+      {required int targetId,required int giftId,
+        Function(dynamic)? success,
+        Function(DioError)? failure}) {
+    Map<String,dynamic> body = {"target_id":targetId,"gift_id":giftId,};
+    callApi(_chatApi.sendGift(body), success, failure);
+  }
+  void sendKiss(
+            {required int targetId,
+  Function(dynamic)? success,
+  Function(DioError)? failure}) {
+Map<String,dynamic> body = {"target_id":targetId};
+    callApi(_chatApi.sendKiss(body), success, failure);
+  }
   void sendTextMessage(
       {required Chat chat,
       Function(dynamic)? success,

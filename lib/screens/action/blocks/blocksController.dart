@@ -16,7 +16,8 @@ class BlocksController extends BaseController implements BlocksControllerInterfa
   final ActionController actionController = Get.find();
   var list = <SinglePeople>[].obs;
   var filterList = <SinglePeople>[].obs;
-  RxBool loading = false.obs;
+  RxBool loading = true.obs;
+  RxBool showInternetConnection = false.obs; 
 
   @override
   void onInit() {
@@ -25,9 +26,14 @@ class BlocksController extends BaseController implements BlocksControllerInterfa
     super.onInit();
   }
 
+  retryConnection(){
+    loading.value = true;
+    showInternetConnection.value = false;
+    getData();
+  }
   @override
   void getData() {
-    loading.value = true;
+
     _peopleRepository.blockList(
         success: (data) {
           loading.value = false;
@@ -36,8 +42,7 @@ class BlocksController extends BaseController implements BlocksControllerInterfa
           list.value = (responseModel.data as List).map((item) => SinglePeople.fromJson(item)).toList();
         },
         failure: (error) {
-          printLog("error #h1:");
-          printLog(error);
+          showInternetConnection.value = true;
           loading.value = false;
         });
   }

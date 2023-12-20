@@ -12,6 +12,8 @@ abstract class ChatControllerInterface{
   void initUserStatus();
   void initTypingStatus();
   void videoCall();
+  void showEmoj();
+  void showGift();
   void sendFileMessage(String filePath);
   void sendAudioMessage(String filePath);
   void sendMultimediaMessage(String filePath);

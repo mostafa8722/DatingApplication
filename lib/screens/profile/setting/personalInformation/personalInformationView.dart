@@ -12,7 +12,7 @@ import '../../../../widgets/dropdown.dart';
 import '../../../../widgets/inputs.dart';
 import 'interfaces/personalInformationViewInterface.dart';
 import 'personalInformationController.dart';
-
+import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 
 class PersonalInformationView extends GetView<PersonalInformationController>
     implements PersonalInformationViewInterface {
@@ -51,15 +51,35 @@ class PersonalInformationView extends GetView<PersonalInformationController>
       const TransparentDivider(height: 8,),
     Obx(() => inputBox(context, controller.firstNameController, hint: MyText.firstName.value)),
       const TransparentDivider(height: 4,),
+
     Obx(() => inputBox(context, controller.lastNameController, hint: MyText.lastName.value)),
       const TransparentDivider(height: 4,),
     Obx(() => inputBox(context, controller.birthdateController,
           hint: MyText.birthdate.value,
-          suffixIcon: Icons.calendar_month_rounded, onClick: () {
-        datePickerDialog(context, controller.onSelectionBirthDate);
+          suffixIcon: Icons.calendar_month_rounded, onClick: () async{
+            var datePicked = await DatePicker.showSimpleDatePicker(
+              context,
+              // initialDate: DateTime(2020),
+              firstDate: DateTime(1900),
+              lastDate: DateTime.now(),
+              dateFormat: "dd-MMMM-yyyy",
+              locale: DateTimePickerLocale.en_us,
+              looping: false,
+              initialDate: DateTime(
+                  int.parse(controller.birthdateController.text.substring(0,4)),
+                  int.parse(controller.birthdateController.text.substring(5,7)),
+                 int.parse(controller.birthdateController.text.substring(8,10))
+
+              )
+
+             
+            );
+
+            controller.onSelectionBirthDate2(datePicked.toString().substring(0,11));
+
       })),
       const TransparentDivider(height: 4,),
-      dropdown(menuItems,controller.onChangedGender,controller.gender == MyText.male ? menuItems[0].value: menuItems[1].value,leftPadding: 8),
+      dropdown(menuItems,controller.onChangedGender,controller.gender.toLowerCase() == MyText.male.toLowerCase() ? menuItems[0].value: menuItems[1].value,leftPadding: 8),
       const TransparentDivider(height: 16,),
       submitButton()
     ];

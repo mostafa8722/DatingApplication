@@ -98,8 +98,8 @@ class MyText{
   static var blockedList = "Blocked List".obs;
   static var changePin = "Change PIN".obs;
   static var changePassword = "Change Password".obs;
-  static var male = "Male".obs;
-  static var female = "Female".obs;
+  static var male = "male".obs;
+  static var female = "female".obs;
   static var email = "Email".obs;
   static var phoneNumber = "Phone Number".obs;
   static var firstName = "First Name".obs;

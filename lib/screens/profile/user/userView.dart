@@ -1,4 +1,6 @@
 
+import 'package:Lover369/widgets/error_connection.dart';
+import 'package:Lover369/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
@@ -21,9 +23,27 @@ class UserView extends GetView<UserController> implements UserViewInterface {
 
   @override
   Widget build(BuildContext context) {
+    return Obx(() =>controller.loading.value? loadingScaffold(context):controller.showInternetConnection.value?errorScaffold(context):userScaffold(context));
+  }
+
+  Widget userScaffold(BuildContext context){
     return Scaffold(
         body: SafeArea(child: body(context)),
         floatingActionButton: circularMenu());
+  }
+
+  Widget errorScaffold(BuildContext context){
+    return Scaffold(body: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ErrorConnection(controller.retryConnection,true)
+      ],
+    ));
+
+  }
+  Widget loadingScaffold(BuildContext context){
+    return Scaffold(body:  circularLoading());
+
   }
 
   @override
@@ -57,7 +77,7 @@ class UserView extends GetView<UserController> implements UserViewInterface {
   Widget about() {
     return Obx(() => titleWidget(
             title: "About",
-            widget: Text(controller.about.value.toString())
+            widget: Text(controller.about.value.toString() !="null"?controller.about.value.toString():"")
         )).paddingOnly(left: 16, right: 16);
   }
 

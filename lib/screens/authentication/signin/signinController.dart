@@ -23,7 +23,7 @@ class SignInController extends AuthController
 
   RxBool rememberMeController = false.obs;
   RxBool loading = false.obs;
-
+  RxBool showInternetConnection = false.obs;
   @override
   void onInit() {
     super.onInit();

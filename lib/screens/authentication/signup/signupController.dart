@@ -28,6 +28,7 @@ class SignUpController extends AuthController implements SignUpControllerInterfa
   RxBool emailErrorMessage = false.obs;
   RxBool passwordErrorMessage = false.obs;
   RxBool confirmPasswordErrorMessage = false.obs;
+  RxBool showInternetConnection = false.obs;
 
   @override
   void dispose() {

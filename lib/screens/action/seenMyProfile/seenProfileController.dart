@@ -20,6 +20,7 @@ class SeenProfileController extends BaseController implements SeenProfileControl
   var list = <SinglePeople>[].obs;
   var filterList = <SinglePeople>[].obs;
   RxBool loading = false.obs;
+  RxBool showInternetConnection = false.obs;
 
   @override
   void onInit() {
@@ -27,10 +28,15 @@ class SeenProfileController extends BaseController implements SeenProfileControl
     getData();
     super.onInit();
   }
-
+  retryConnection(){
+    loading.value = true;
+    showInternetConnection.value = false;
+    getData();
+  }
   @override
   void getData() {
     loading.value = true;
+    showInternetConnection.value = false;
     _peopleRepository.whoSeenMyProfile(
         success: (data) {
           loading.value = false;
@@ -40,6 +46,7 @@ class SeenProfileController extends BaseController implements SeenProfileControl
           list.value = (actionCountModel.data as List).map((item) => SinglePeople.fromJson(item)).toList();
         },
         failure: (error) {
+          showInternetConnection.value = true;
           printLog("error #h1:");
           printLog(error);
           loading.value = false;

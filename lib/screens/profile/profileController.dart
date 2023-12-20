@@ -14,7 +14,7 @@ class ProfileController extends BaseController implements ProfileControllerInter
   final appController  = Get.find<AppController>();
   final UserRepository _userRepository = UserRepository();
   Rx<bool> loading = false.obs;
-
+  RxBool showInternetConnection = false.obs;
   @override
   void updateProfile(String imagePath) {
     loading.value = true;
@@ -59,5 +59,13 @@ class ProfileController extends BaseController implements ProfileControllerInter
     _userRepository.saveToken(token: null);
     Get.offAllNamed(MyRoute.splashRoute);
   }
-
+  void onClickPersonalInformation() {
+    Get.toNamed(MyRoute.settingPersonal);
+  }
+  void onClickDiscoverySetting() {
+    Get.toNamed(MyRoute.settingDiscover);
+  }
+  void onClickSecurity() {
+    Get.toNamed(MyRoute.settingSecurity);
+  }
 }

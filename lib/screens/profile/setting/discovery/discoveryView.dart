@@ -1,5 +1,6 @@
 
 import 'package:Lover369/utils/translations.dart';
+import 'package:Lover369/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
@@ -54,6 +55,15 @@ class DiscoveryView extends GetView<DiscoveryController> implements DiscoveryVie
           );
         },
         itemCount: items.length);
+  }
+  Widget submitButton() {
+    return Obx(() => Button(
+      onPressed: () {
+       // controller.buyPay();
+      },
+      text:"Save",
+     loading: controller.loadingSave.value,
+    ));
   }
 
 }

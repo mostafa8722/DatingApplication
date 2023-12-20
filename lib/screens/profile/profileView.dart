@@ -67,12 +67,15 @@ class ProfileView extends GetView<ProfileController>
   Widget menus() {
     return Obx(() => Column(
       children: [
-        profileMenuItem(title:MyText.setting.value, icon: Icons.settings, onClick: controller.gotoSetting),
-        profileMenuItem(title: MyText.helpCenter.value, icon: Icons.help, onClick: () {}),
-        profileMenuItem(
-            title: MyText.inviteFriends.value,
-            icon: Icons.person_add_alt_1,
-            onClick: () {}),
+
+        profileMenuItem(title:MyText.personalInformation.value, icon: Icons.person,   iconColor: const Color(0xFF9F24FF),onClick: controller.onClickPersonalInformation),
+        profileMenuItem(title:MyText.discoverySetting.value, icon: Icons.assistant_navigation,  iconColor: const Color(0xFFFD9A0E), onClick: controller.onClickDiscoverySetting),
+        profileMenuItem(title:MyText.security.value, icon: Icons.security,  iconColor: const Color(0xFF13C57D), onClick: controller.onClickSecurity),
+        // profileMenuItem(title: MyText.helpCenter.value, icon: Icons.help, onClick: () {}),
+        // profileMenuItem(
+        //     title: MyText.inviteFriends.value,
+        //     icon: Icons.person_add_alt_1,
+        //     onClick: () {}),
         profileMenuItem(
             title: MyText.logout.value,
             icon: Icons.exit_to_app_rounded,
@@ -111,14 +114,14 @@ class ProfileView extends GetView<ProfileController>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "Enjoy All Benefits!",
+                    "Increase Your Wallet!",
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 22)
                   ),
                   const Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ",
+                    "",
                     style: TextStyle(color: Colors.white, fontSize: 13),
                   ),
                   Container(

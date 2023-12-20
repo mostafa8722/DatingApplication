@@ -29,6 +29,9 @@ class AppController extends BaseController {
   var profile = "".obs;
   var callStatus = CallStatus.none.obs;
 
+  Rx<bool> loadedInitData = false.obs;
+  Rx<bool> loading = false.obs;
+
   @override
   void onInit() async{
     getData();
@@ -71,18 +74,27 @@ class AppController extends BaseController {
   }
 
   getData() {
+
     _appRepository.getInitialize(
         success: (data) {
           printLog(data);
+          loadedInitData.value = true;
+          loading.value = false;
+
           var responseModel = responseFromJson(data.toString());
           initialize.value = Initialize.fromJson(responseModel.data);
         },
         failure: (error) {
-          printLog("error #h1:");
-          printLog(error);
+          loadedInitData.value = false;
+          loading.value = false;
         });
   }
 
+  void initData(){
+    loading.value = true;
+    getData();
+    getLanguages();
+  }
 
   void initializeSocket() async {
     var header = await getSocketHeader();
@@ -90,26 +102,33 @@ class AppController extends BaseController {
     printLog(header!['token']);
     socket = IO.io(BaseSocket.socketUrl,
         OptionBuilder()
-            .setTransports(['websocket']) // for Flutter or Dart VM
+            .setTransports(['websocket',"polling"],) // for Flutter or Dart VM
             .setExtraHeaders(header)
             .enableAutoConnect()
             .enableReconnection()
-            .setTimeout(10000)// optional
+
+            .setTimeout(60000)// optional
+
             .build()
     );
     socket.auth = header;
     socket.connect();
 
+
     socket.onError((data){
       debugPrint('error:$data');
+      printLog("header ===>error $data");
     });
     socket.onConnectError((data){
+      printLog("header ===>connect_error $data");
+
       debugPrint('connect_error:$data');
       socket.connect();
     });
 
     socket.onConnect((love) {
-      print('connect');
+      printLog("header ===>love $love");
+      print('connect333333333333333333333333333333333333333333');
       print("$love");
     });
 
@@ -121,8 +140,24 @@ class AppController extends BaseController {
       socket.open().connect();
     });
 
+    socket.onPing((data) {
+    print('pinggggggggggg');
+    print("LOG:$data");
+    });
     socket.on(BaseSocket.callChannel.incomingCall, (data) {
+      print("req222222222aa");
+      Call call = Call.fromJson(data);
+      print(call.callInfo!.status);
+      print(call.callInfo!.toJson());
+      print(callStatus.value);
+      print(CallStatus.none);
+      if(call.callInfo!.status=="Ended"){
+        Get.back(canPop: true);
+
+
+      }
       if(callStatus.value == CallStatus.none){
+        print("aaaaaaaaa1");
 
         callStatus.value=CallStatus.ringing;
         Get.toNamed(MyRoute.callRoute,arguments: {"income-call":Call.fromJson(data)})
@@ -133,31 +168,36 @@ class AppController extends BaseController {
         });
       }else{
         socket.emit(BaseSocket.callChannel.rejectIncomingCall);
+        print("aaaaaaaaa2");
+
       }
     });
 
     socket.on(BaseSocket.callChannel.endCall, (data) {
+      print("req222222222aa1");
+
       if(callStatus.value == CallStatus.none){
 
       }
     });
-    // socket.on(BaseSocket.callChannel.acceptIncomingCall, (data) {
-    //   print(BaseSocket.callChannel.acceptIncomingCall);
-    //   print(data);
-    // });
-    // socket.on(BaseSocket.callChannel.rejectIncomingCall, (data) {
-    //   print(BaseSocket.callChannel.rejectIncomingCall);
-    //   print(data);
-    // });
+    socket.on(BaseSocket.callChannel.acceptIncomingCall, (data) {
+      print("req222222222aa2");
+      print(BaseSocket.callChannel.acceptIncomingCall);
+      print(data);
+    });
+    socket.on(BaseSocket.callChannel.rejectIncomingCall, (data) {
+      print("req222222222aa3");
+      print(BaseSocket.callChannel.rejectIncomingCall);
+      print(data);
+    });
   }
 
   void getLanguages() {
-    print("llllllllllllllllllllllll");
     _appRepository.getTranslation(
         success: (data) {
-          print("aaaaaaaaaaaaaaaaa");
-          printLog(data);
-          print("vvvvvvvvvvvvvvvvv");
+
+          loadedInitData.value = true;
+          loading.value = false;
           var responseModel = responseFromJson(data.toString());
           var translate = Languages.fromJson(responseModel.data);
           MyText.age.value = translate.sections!.appSettingAge![0];
@@ -193,7 +233,8 @@ class AppController extends BaseController {
           MyText.logout.value = translate.sections!.appProfileLogout![0];
         },
         failure: (error) {
-          printLog(error.response);
+          loadedInitData.value = false;
+          loading.value = false;
         });
   }
 }

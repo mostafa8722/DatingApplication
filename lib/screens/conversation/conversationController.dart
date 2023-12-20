@@ -23,6 +23,8 @@ class ConversationController extends BaseController implements ConversationContr
   var onlineUsers = <OnlineUser>[].obs;
   var onlineUserCount = 0.obs;
   RxString searchText = "".obs;
+  var loading = true.obs;
+  RxBool showInternetConnection = false.obs;
 
   @override
   void onInit() {
@@ -30,21 +32,29 @@ class ConversationController extends BaseController implements ConversationContr
       printLog('getConversations()');
       getConversations();
     });
+    printLog('getConversations2()');
     ever(searchText, (search) => filterConversations.value = conversations.where((element) => element.user!.target!.fullName.toString().contains(search)).toList());
     initOnlineUsers();
     super.onInit();
   }
-
+  retryConnection(){
+    loading.value = true;
+    showInternetConnection.value = false;
+    getConversations();
+  }
   @override
   void getConversations() {
+
     _peopleRepository.getConversations(
       success: (data) {
         var responseModel = responseFromJson(data.toString());
+        loading.value = false;
         conversations.value = (responseModel.data as List).map((item) => Conversation.fromJson(item)).toList();
-        conversations.sort((a, b) => DateTime.parse(b.latestMessage!.date.toString()).millisecondsSinceEpoch.compareTo(DateTime.parse(a.latestMessage!.date.toString()).millisecondsSinceEpoch));
-        conversations.refresh();
+       // conversations.sort((a, b) => DateTime.parse(b.latestMessage!.date.toString()).millisecondsSinceEpoch.compareTo(DateTime.parse(a.latestMessage!.date.toString()).millisecondsSinceEpoch));
+      //  conversations.refresh();
       },
       failure: (error) {
+        showInternetConnection.value = true;
         printLog("#conv1-e");
         printLog(error.response?.data);
       },

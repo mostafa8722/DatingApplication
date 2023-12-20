@@ -18,7 +18,8 @@ class FavoritesController extends BaseController implements FavoritesControllerI
   final ActionController actionController = Get.find();
   var list = <SinglePeople>[].obs;
   var filterList = <SinglePeople>[].obs;
-  RxBool loading = false.obs;
+  RxBool loading = true.obs;
+  RxBool showInternetConnection = false.obs;
 
   @override
   void onInit() {
@@ -27,9 +28,14 @@ class FavoritesController extends BaseController implements FavoritesControllerI
     super.onInit();
   }
 
+  retryConnection(){
+    loading.value = true;
+    showInternetConnection.value = false;
+    getData();
+  }
   @override
   void getData() {
-    loading.value = true;
+
     _peopleRepository.favoriteList(
         success: (data) {
           loading.value = false;
@@ -38,6 +44,7 @@ class FavoritesController extends BaseController implements FavoritesControllerI
           list.value = (responseModel.data as List).map((item) => SinglePeople.fromJson(item)).toList();
         },
         failure: (error) {
+          showInternetConnection.value = true;
           printLog("error #h1:");
           printLog(error);
           loading.value = false;

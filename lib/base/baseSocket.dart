@@ -7,7 +7,7 @@ class BaseSocket{
   static MessageChannel messageChannel = MessageChannel();
   static CallChannel callChannel = CallChannel();
   static UserChannel userChannel = UserChannel();
-  static const socketUrl = "http://167.172.96.166:3000";
+  static const socketUrl = "https://socket.lover369.com";
 }
 
 class MessageChannel{

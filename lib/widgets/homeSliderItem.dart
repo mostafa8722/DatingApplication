@@ -141,7 +141,7 @@ Widget homeSliderItem({
               const VerticalTransparentDivider(width: 8.0),
               MyFloatingButton(
                 onPressed:() {
-              coverMode.value = CoverMode.like;
+              //coverMode.value = CoverMode.like;
               onClickLike();
               },
                 icon: Res.homeSliderLikeIcon,

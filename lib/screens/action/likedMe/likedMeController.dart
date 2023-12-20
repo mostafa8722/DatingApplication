@@ -19,8 +19,8 @@ class LikedMeController extends BaseController implements LikedMeControllerInter
   final ActionController actionController = Get.find();
   var list = <SinglePeople>[].obs;
   var filterList = <SinglePeople>[].obs;
-  RxBool loading = false.obs;
-
+  RxBool loading = true.obs;
+  RxBool showInternetConnection = false.obs;
   @override
   void onInit() {
     ever(actionController.searchText, (search) => filterList.value = list.where((element) => element.target!.fullName.toString().contains(search)).toList());
@@ -28,9 +28,14 @@ class LikedMeController extends BaseController implements LikedMeControllerInter
     super.onInit();
   }
 
+  retryConnection(){
+    loading.value = true;
+    showInternetConnection.value = false;
+    getData();
+  }
   @override
   void getData() {
-    loading.value = true;
+
     _peopleRepository.whoLikedMe(
         success: (data) {
           loading.value = false;
@@ -40,6 +45,8 @@ class LikedMeController extends BaseController implements LikedMeControllerInter
           list.value = (actionCountModel.data as List).map((item) => SinglePeople.fromJson(item)).toList();
         },
         failure: (error) {
+          showInternetConnection.value = true;
+
           printLog("error #h1:");
           printLog(error);
           loading.value = false;

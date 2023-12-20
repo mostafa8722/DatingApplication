@@ -19,6 +19,7 @@ class LikesController extends BaseController implements LikesControllerInterface
   var list = <SinglePeople>[].obs;
   var filterList = <SinglePeople>[].obs;
   RxBool loading = false.obs;
+  RxBool showInternetConnection = false.obs;
 
   @override
   void onInit() {
@@ -26,10 +27,16 @@ class LikesController extends BaseController implements LikesControllerInterface
     getData();
     super.onInit();
   }
-
+  retryConnection(){
+    loading.value = true;
+    showInternetConnection.value = false;
+    getData();
+  }
   @override
   void getData() {
     loading.value = true;
+    showInternetConnection.value = false;
+
     _peopleRepository.likedList(
         success: (data) {
           loading.value = false;
@@ -38,6 +45,8 @@ class LikesController extends BaseController implements LikesControllerInterface
           list.value = (responseModel.data as List).map((item) => SinglePeople.fromJson(item)).toList();
         },
         failure: (error) {
+          showInternetConnection.value = true;
+
           printLog("error #h1:");
           printLog(error);
           loading.value = false;

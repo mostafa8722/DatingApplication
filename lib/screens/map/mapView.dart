@@ -21,10 +21,12 @@ class MapView extends GetView<MapController> implements MapViewInterface {
       floatingActionButton: FloatingActionButton(
         onPressed:() async{
           if (await Permission.contacts.request().isGranted) {
+
             controller.currentLocation();
           }else{
             final status = await Permission.location.request();
             if(status.isGranted){
+
               controller.currentLocation();
             }
           }
@@ -102,29 +104,46 @@ class MapView extends GetView<MapController> implements MapViewInterface {
 
   @override
   Widget map() {
+    final LatLng _kMapCenter =
+    LatLng(19.018255973653343, 72.84793849278007);
+     final CameraPosition _kInitialPosition =
+    CameraPosition(target: _kMapCenter, zoom: 11.0, tilt: 0, bearing: 0);
     return Obx(() => GoogleMap(
-        mapType: MapType.normal,
-        zoomControlsEnabled: false,
-        initialCameraPosition: controller.kGooglePlex.value,
-        markers: controller.markers.value,
-        // myLocationButtonEnabled: true,
-        myLocationEnabled: true,
-        onMapCreated: (GoogleMapController mapController) {
-          controller.mapController.complete(mapController);
-        },
-        onCameraIdle: () async{
-          final GoogleMapController googleMapController = await controller.mapController.future;
-         googleMapController.getVisibleRegion().then((value) {
-         printLog(value.northeast);
-         printLog(value.southwest);
-         });
-         controller.getDate();
-        },
-      onCameraMove: (position) {
-        controller.centerPosition = position.target;
+        initialCameraPosition : controller.kGooglePlex.value,
+      onMapCreated: (GoogleMapController controller) {
+        MapController.mapController.complete(controller);
       },
-
+      // initialCameraPosition: CameraPosition(
+      //   target: controller.lat.value!="" ?    LatLng(double.parse(controller.lat.value) , double.parse(controller.lng.value)) :
+      //       LatLng(56.324293441187315, 38.13961947281509),
+      //   zoom: 16.0,
+      // ),
     ));
+
+    // return Obx(() => GoogleMap(
+    //     mapType: MapType.hybrid,
+    //     zoomControlsEnabled: false,
+    //     initialCameraPosition: controller.kGooglePlex.value,
+    //     markers: controller.markers.value,
+    //     // myLocationButtonEnabled: true,
+    //     myLocationEnabled: true,
+    //     onMapCreated: (GoogleMapController mapController) {
+    //     //  controller.mapController.complete(mapController);
+    //     },
+      //   onCameraIdle: () async{
+      //     final GoogleMapController googleMapController = await controller.mapController.future;
+      //    googleMapController.getVisibleRegion().then((value) {
+      //
+      //    printLog(value.northeast);
+      //    printLog(value.southwest);
+      //    });
+      //    controller.getDate();
+      //   },
+      // onCameraMove: (position) {
+      //   controller.centerPosition = position.target;
+      // },
+
+  //  ));
   }
 
   @override

@@ -12,14 +12,16 @@ class ChatApi extends BaseNetwork {
   Future<Response> getGiftList(Map<String, dynamic>? body) async =>
       dio.post('/chat/gift_list', data: body, options: Options(headers: await getHeader()));
 
+  Future<Response> sendGift(Map<String, dynamic>? body) async =>
+      dio.post('/chat/send_gift', data: body, options: Options(headers: await getHeader()));
+  Future<Response> sendKiss(Map<String, dynamic>? body) async =>
+      dio.post('/chat/send_kiss', data: body, options: Options(headers: await getHeader()));
   Future<Response> sendChat(Map<String, dynamic>? body) async =>
       dio.post('/chat/send', data: body, options: Options(headers: await getHeader()));
 
   Future<Response> sendReaction(Map<String, dynamic>? body) async =>
       dio.post('/chat/send_reaction', data: body, options: Options(headers: await getHeader()));
 
-  Future<Response> sendGift(Map<String, dynamic>? body) async =>
-      dio.post('/chat/send_gift', data: body, options: Options(headers: await getHeader()));
 
   Future<Response> deleteChat(Map<String, dynamic>? body) async =>
       dio.post('/chat/delete', data: body, options: Options(headers: await getHeader()));

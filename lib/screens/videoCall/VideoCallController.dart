@@ -11,7 +11,7 @@ class VideoCallController extends BaseController{
   final RxnInt remoteUid = RxnInt();
   final RxBool localUserJoined = false.obs;
   late RtcEngine engine;
-
+  RxBool showInternetConnection = false.obs;
   @override
   void onInit() {
 
@@ -21,23 +21,34 @@ class VideoCallController extends BaseController{
   @override
   void dispose() {
     super.dispose();
+    _dispose();
   }
-
+  Future<void> _dispose() async {
+    await engine.leaveChannel();
+    await engine.release();
+  }
   Future<void> initAgora() async {
     // retrieve permissions
     await [Permission.microphone, Permission.camera].request();
 
     //create the engine
     engine = createAgoraRtcEngine();
+    debugPrint("appppid2222");
+    debugPrint(appId);
     await engine.initialize(const RtcEngineContext(
       appId: appId,
       channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
     ));
 
+    debugPrint("appppid");
+    debugPrint(appId);
+
     engine.registerEventHandler(
       RtcEngineEventHandler(
         onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
           debugPrint("local user ${connection.localUid} joined");
+          debugPrint("appppid00");
+          debugPrint(appId);
           localUserJoined.value = true;
         },
         onUserJoined: (RtcConnection connection, int _remoteUid, int _elapsed) {
@@ -59,6 +70,7 @@ class VideoCallController extends BaseController{
     await engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
     await engine.enableVideo();
     await engine.startPreview();
+
 
     await engine.joinChannel(
       token: token,

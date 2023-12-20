@@ -17,6 +17,47 @@ class Res{
   static const bgPackage = "assets/images/bg_package.png";
   static const packageCrown = "assets/images/package_crown.png";
 
+  static const List<String> videoExtension = [
+    "webm",
+    "mkv",
+    "flv",
+    "vob",
+    "ogv",
+    "ogg",
+    "rrc",
+    "gifv",
+    "mng",
+    "mov",
+    "avi",
+    "qt",
+    "wmv",
+    "yuv",
+    "rm",
+    "asf",
+    "amv",
+    "mp4",
+    "m4p",
+    "m4v",
+    "mpg",
+    "mp2",
+    "mpeg",
+    "mpe",
+    "mpv",
+    "m4v",
+    "svi",
+    "3gp",
+    "3g2",
+    "mxf",
+    "roq",
+    "nsv",
+    "flv",
+    "f4v",
+    "f4p",
+    "f4a",
+    "f4b",
+    "mod",
+  ];
+
   static const homeSliderRemoveIcon = Icons.close;
   static const  homeSliderCommunicateIcon=Icons.person;
   static const  homeSliderAddContactIcon=Icons.person_add_alt_1_rounded;

@@ -163,6 +163,7 @@ class UserRepository extends BaseRepository {
       phone: phone,
       email:email
     ).toFormData();
+    print(gender);
     callApi(_profileApi.update(body), success, failure);
   }
 

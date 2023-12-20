@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:Lover369/screens/videoCall/videoCallView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -165,13 +166,18 @@ void main() async{
                   binding:CallBinding()
               ),
               GetPage(
+                  name: MyRoute.videoCallRoute,
+                  page: () => const VideoCallView(),
+                  binding:CallBinding()
+              ),
+              GetPage(
                   name: MyRoute.userProfileRoute,
                   page: () => const UserView(),
                   binding:UserBinding()
               ),
               GetPage(
                   name: MyRoute.chatRoute,
-                  page: () => const ChatView(),
+                  page: () =>  ChatView(),
                   binding:ChatBinding()
               ),
               GetPage(

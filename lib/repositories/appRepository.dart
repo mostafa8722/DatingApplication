@@ -33,4 +33,27 @@ class AppRepository extends BaseRepository {
     callApi(_appApi.translation(null,language), success, failure);
   }
 
+
+  void sendDiscountCode(
+      {
+        required String package_id,
+        required String code,
+        Function(dynamic)? success,
+        Function(DioError)? failure}) {
+    Map<String,dynamic> body = {"package_id":package_id,"code":code};
+    callApi(_appApi.discountCode(body), success, failure);
+  }
+
+  void buyPackage(
+      {
+        required String package_id,
+        required String gateway_id,
+        required String code,
+        Function(dynamic)? success,
+        Function(DioError)? failure}) {
+    Map<String,dynamic> body = {"package_id":package_id,"code":code,"gateway_id":gateway_id};
+    callApi(_appApi.buyPackage(body), success, failure);
+  }
+
+
 }

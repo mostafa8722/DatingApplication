@@ -1,3 +1,4 @@
+import 'package:Lover369/repositories/appRepository.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ import '../../../utils/route.dart';
 import 'interfaces/userControllerInterface.dart';
 
 class UserController extends BaseController implements UserControllerInterface{
+  final AppRepository _appRepository = AppRepository();
   final PeopleRepository _peopleRepository = PeopleRepository();
   final ContactRepository _contactRepository = ContactRepository();
   PageController pagerController = PageController(initialPage: 0);
@@ -35,7 +37,8 @@ class UserController extends BaseController implements UserControllerInterface{
   RxList<String> bestPhotos = <String>[].obs;
   RxList<String> sliderPhotos = <String>[].obs;
   RxList<Interests> interests = <Interests>[].obs;
-
+  RxBool showInternetConnection = false.obs;
+  RxBool loading = true.obs;
   @override
   void onInit() {
     initializeData();
@@ -50,6 +53,7 @@ class UserController extends BaseController implements UserControllerInterface{
 
   @override
   void initializeData() {
+    getData();
     singlePeople = Get.arguments["data"];
     viewMode.value = singlePeople is SinglePeople ? UserViewMode.show:UserViewMode.editable;
     if(singlePeople is SinglePeople){
@@ -66,7 +70,22 @@ class UserController extends BaseController implements UserControllerInterface{
       initializeInterests(singlePeople!.target!.interests!);
     }
   }
+  getData() {
 
+    _appRepository.getInitialize(
+        success: (data) {
+          loading.value = false;
+          showInternetConnection.value = false;
+        },
+        failure: (error) {
+          loading.value = false;
+          showInternetConnection.value = true;
+        });
+  }
+  void retryConnection(){
+    loading.value = true;
+    getData();
+  }
   @override
   void gotoChat() {
     Get.toNamed(MyRoute.chatRoute,arguments: {"data":ChatArguments.fromSinglePeople(singlePeople!)});
