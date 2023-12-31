@@ -43,13 +43,12 @@ class SignUpView extends GetView<SignUpController> implements SignUpViewInterfac
           forceElevated: innerBoxIsScrolled,
           leading:IconButton(onPressed: ()=>Get.back(), icon: const Icon(Icons.arrow_back)),
         )];},
-      body: Container(
-          color: Colors.white,
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 36),
-          child:ScrollConfiguration(
-                    behavior: CustomScroll(),
-                    child: ListView(
+      body:
+      Padding(
+        padding: EdgeInsets.symmetric(vertical: 20.0,horizontal: 36.0),
+        child: SingleChildScrollView(
+          child:
+          Column(
             children: [
               image(),
               const TransparentDivider(
@@ -102,8 +101,9 @@ class SignUpView extends GetView<SignUpController> implements SignUpViewInterfac
               const TransparentDivider(
                 height: 32,
               ),
-            ],
-          ))),
+            ],),
+        ),
+      ),
     );
     // return SafeArea(
     //     child: ScrollConfiguration(

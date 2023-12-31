@@ -22,22 +22,16 @@ Widget onlineUserItem({
         height: 70,
         decoration: BoxDecoration(
             color: actionItemBackgroundColor,
-            borderRadius: BorderRadius.circular(actionRounded)),
-        child: Column(
-          children: [
-            Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    border:
-                        Border.all(width: 2.0, color: const Color(0xFFFFFFFF))),
-                child: AspectRatio(
-                    aspectRatio: 1,
-                    child: Image.network(
-                      image.toString(),
-                      fit: BoxFit.cover,
-                    ))),
-          ],
+            borderRadius: BorderRadius.circular(35.0)),
+        child:    ClipRRect(
+          borderRadius: BorderRadius.circular(35.0),
+          child: Image.network(
+            image.toString(),
+            height: 60.0,
+            width: 60.0,
+          ),
         ),
+
       ));
 }
 

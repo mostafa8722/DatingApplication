@@ -89,7 +89,8 @@ class CallController extends BaseController implements CallControllerInterface {
 
 
       if(call.callInfo!.status == "Rejected"){
-
+        engine?.disableAudio();
+        engine?.disableVideo();
         Get.back(canPop: true);
       }
       if(call.callInfo!.status == "Requested"){
@@ -100,7 +101,13 @@ class CallController extends BaseController implements CallControllerInterface {
         FlutterRingtonePlayer.stop();
       }
 
+      print("EndedEnded");
+      print(call.callInfo!.status);
       if(call.callInfo!.status == "Ended"){
+
+         engine.disableAudio();
+         engine.disableVideo();
+
         Get.back(canPop: true);
       }
 

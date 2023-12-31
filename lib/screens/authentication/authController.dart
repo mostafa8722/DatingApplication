@@ -6,13 +6,20 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../base/baseController.dart';
 import '../../repositories/userRepository.dart';
 import 'authInterface.dart';
+import 'package:flutter/material.dart';
 
 class AuthController extends BaseController implements AuthInterface {
   UserRepository userRepository = UserRepository();
    FacebookAuth? _facebookAuth;
+  static const  List<String> scopes = <String>[
+    'email',
+    'https://www.googleapis.com/auth/contacts.readonly',
+  ];
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-      clientId:
-          "282575506652-s6oq1dfk80mj77h3arp582iutgs4tmh4.apps.googleusercontent.com");
+    scopes: scopes,
+      clientId: "543Q445W84.com.example.dating_application"
+
+  );
 
 
   @override
@@ -20,6 +27,7 @@ class AuthController extends BaseController implements AuthInterface {
     _googleSignIn.signOut();
     super.onInit();
   }
+
 
   @override
   void signinApple() {
@@ -61,22 +69,34 @@ class AuthController extends BaseController implements AuthInterface {
   @override
   void signinGoogle() async {
     //for widget test
-    print("google auth error==?1");
+
     if (Get.testMode) testClickedSigninGoogle = true;
-    print("google auth error==?2");
+
     _googleSignIn.signIn().then((signin) {
       // print("goooogle:::${signin}");
       signin?.authentication.then((auth) {
         print(auth.accessToken);
         print(auth.idToken);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("success"),
+          duration: Duration(milliseconds: 2000),
+        ));
       }).onError((error, stackTrace) {
         print("google auth error==?");
         print("google auth error:::${stackTrace}");
         print("google auth error:::${error}");
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("error 1"),
+          duration: Duration(milliseconds: 2000),
+        ));
       });
     }).onError((error, stackTrace) {
       print("google auth error:::${stackTrace}");
       print("err:::${error}");
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("error2222"),
+        duration: Duration(milliseconds: 2000),
+      ));
     });
   }
 

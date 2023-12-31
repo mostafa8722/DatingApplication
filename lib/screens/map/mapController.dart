@@ -61,7 +61,10 @@ class MapController extends BaseController implements MapControllerInterface {
           loading.value = false;
           printLog("data222");
           printLog(data);
+         // printLog(data.data!);
+          printLog("data2220");
           var responseModel = responseFromJson(data.toString());
+          print((responseModel.data as List).map((item) => SinglePeople.fromJson(item)).toList());
           peoples.value = (responseModel.data as List).map((item) => SinglePeople.fromJson(item)).toList();
           addMarker();
         },

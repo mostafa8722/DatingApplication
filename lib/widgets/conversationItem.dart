@@ -36,17 +36,13 @@ Widget conversationItem({
         borderRadius: BorderRadius.circular(actionRounded)),
     child: Row(
       children: [
-        Container(
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8)
-                ),
-                child: AspectRatio(
-                    aspectRatio: 1,
-                    child: Image.network(
-                      image.toString(),
-                      fit: BoxFit.cover,
-                    )),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(26.0),
+          child: Image.network(
+            image.toString(),
+            height: 52.0,
+            width: 52.0,
+          ),
         ),
         const VerticalTransparentDivider(
           width: 8,

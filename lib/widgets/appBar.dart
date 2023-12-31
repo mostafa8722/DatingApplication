@@ -44,15 +44,35 @@ AppBar defaultAppBar(
       bool showLeading = true,
       double elevation = 0,
       Widget? subtitle,
+      String? image,
       }) {
   return AppBar(
-    title: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    title:Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        title is Rx<String> ? Obx(() => Text(title.value)):Text(title),
-        subtitle ?? Container()
+      // IconButton(onPressed: (){Get.back();}, icon:const Icon(Icons.arrow_back_rounded)),
+
+        image!=null?
+        ClipRRect(
+          borderRadius: BorderRadius.circular(25.0),
+          child: Image.network(
+            image,
+            height: 50.0,
+            width: 50.0,
+          ),
+        ): SizedBox(width: 0,),
+         SizedBox(width: 5,),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            title is Rx<String> ? Obx(() => Text(title.value)):Text(title),
+            subtitle ?? Container()
+          ],
+        )
       ],
     ),
+
+    titleSpacing: 0,
     leading: showLeading ? IconButton(onPressed: (){Get.back();}, icon:const Icon(Icons.arrow_back_rounded)):null,
     actions: actions,
     backgroundColor: Colors.white,

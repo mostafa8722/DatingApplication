@@ -106,7 +106,7 @@ Widget targetMessage(
           Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
               decoration: const BoxDecoration(
-                  color: Colors.red,
+                  color: Color(0xffe9e9e9e),
                   borderRadius: BorderRadius.only(
                       topRight: chatCardRadius,
                       bottomLeft: chatCardRadius,
@@ -122,7 +122,7 @@ Widget targetMessage(
                         maxLines: 10,
                         overflow: TextOverflow.visible,
                         textAlign: TextAlign.start,
-                        style: const TextStyle(fontSize: 14),
+                        style: const TextStyle(fontSize: 14,color: Color.fromRGBO(26 ,54, 93,1)),
                       ),
                       const SizedBox(
                         height: 4,

@@ -50,8 +50,7 @@ class ChatController extends BaseController implements ChatControllerInterface {
 
   @override
   void onInit() {
-    // printLog("value00000000000000000");
-    // baseSocket.connect();
+
     initializeSocket();
     initUserStatus();
     initTypingStatus();
@@ -62,7 +61,12 @@ class ChatController extends BaseController implements ChatControllerInterface {
 
       print("scrollController.offset");
       print(scrollController.offset);
+      print(scrollController.position.maxScrollExtent );
+      print(scrollController.position);
+      if(scrollController.position.maxScrollExtent==scrollController.offset &&  loadingMore.value==false )
+        updateMessage();
       offset.value =scrollController.offset;
+
     });
 
     super.onInit();
@@ -95,6 +99,8 @@ class ChatController extends BaseController implements ChatControllerInterface {
   @override
   void initializePeople() {
     chatArguments = Get.arguments["data"];
+    print("chatArguments");
+    print(chatArguments);
     targetName.value = chatArguments.name.toString();
     targetProfile.value = chatArguments.profile.toString();
     targetId = chatArguments.id!;
@@ -109,7 +115,10 @@ class ChatController extends BaseController implements ChatControllerInterface {
     }
   }
   retryConnection(){
+    if(page.value==1)
     loading.value = true;
+    else
+      loadingMore.value = true;
     showInternetConnection.value = false;
     getMessages();
   }
@@ -131,7 +140,7 @@ class ChatController extends BaseController implements ChatControllerInterface {
             .toList()
             .reversed
             .toList();
-        messages.value= messages.value+ newMessages;
+        messages.value=  newMessages+messages.value ;
         if(newMessages.length!=15){
           scrollEnd.value = true;
         }
@@ -141,6 +150,7 @@ class ChatController extends BaseController implements ChatControllerInterface {
       },
       failure: (error) {
         loading.value = false;
+        loadingMore.value = false;
         showInternetConnection.value = true;
         printLog("#cm0-e");
         printLog(error.response?.data);

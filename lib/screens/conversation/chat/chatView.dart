@@ -45,7 +45,9 @@ class ChatView extends GetView<ChatController> implements ChatViewInterface {
   @override
   appBar() {
     return defaultAppBar(
+
         title: controller.targetName.value,
+        image: controller.targetProfile.value,
         actions: [
           IconButton(onPressed: () {controller.call();}, icon: const Icon(Icons.call)),
           IconButton(
@@ -199,7 +201,9 @@ Widget _widgetGift (BuildContext context ,int index){
 
   _onEndScroll(ScrollMetrics metrics) {
     print("Scroll22 End");
-    controller.updateMessage();
+    print(controller.offset.value);
+    // if(controller.offset.value!=0.0 && controller.loadingMore.value==false)
+    // controller.updateMessage();
   }
 
   List<Widget> message(RxList<Chat> messages) {

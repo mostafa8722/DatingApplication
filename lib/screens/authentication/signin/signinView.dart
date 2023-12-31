@@ -12,7 +12,6 @@ import '../../../widgets/button.dart';
 import '../../../widgets/checkbox.dart';
 import '../../../widgets/divider.dart';
 import '../../../widgets/inputs.dart';
-import '../../../widgets/scrollBehavior.dart';
 import '../../../widgets/spannable.dart';
 import '../../../widgets/text.dart';
 import 'interfaces/signinViewInterface.dart';
@@ -27,7 +26,7 @@ class SignInView extends GetView<SignInController> implements SignInViewInterfac
     return Scaffold(
       backgroundColor: Get.theme.backgroundColor,
       resizeToAvoidBottomInset: true,
-      body: Get.testMode ? mobileBody() : SizerUtil.deviceType ==
+      body: !Get.testMode ? mobileBody() : SizerUtil.deviceType ==
           DeviceType.tablet
           ? tabletBody()
           : mobileBody(),
@@ -42,66 +41,69 @@ class SignInView extends GetView<SignInController> implements SignInViewInterfac
               pinned: false,
               floating: true,
               forceElevated: innerBoxIsScrolled,
+
               leading:IconButton(onPressed: ()=>Get.back(), icon: const Icon(Icons.arrow_back)),
             )];},
-        body: Container(
-            color: Colors.white,
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 36),
-            child:ScrollConfiguration(
-    behavior: CustomScroll(),
-    child: ListView(
-                  children: [
-                    const Spacer(),
-                    image(),
-                    const TransparentDivider(
-                      height: 8.0,
-                    ),
-                    description(),
-                    const TransparentDivider(
-                      height: 24,
-                    ),
-                    inputUsername(),
-                    const TransparentDivider(
-                      height: 4,
-                    ),
-                    inputPassword(),
-                    const TransparentDivider(
-                      height: 12,
-                    ),
-                    // rememberMe(),
-                    // const TransparentDivider(
-                    //   height: 2,
-                    // ),
-                    signInButton(),
-                    const TransparentDivider(
-                      height: 16,
-                    ),
-                    forgotPasswordButton(),
-                    const TransparentDivider(
-                      height: 16,
-                    ),
-                    divider(),
-                    const TransparentDivider(
-                      height: 24,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        signInFacebookButton(),
-                        signInGoogleButton(),
-                        signInAppleButton(),
-                      ],
-                    ),
-                    const TransparentDivider(
-                      height: 32,
-                    ),
-                    registerButton(),
-                    const TransparentDivider(
-                      height: 32,
-                    ),
-                  ],
-                ))));
+        body:
+        Padding(
+        padding: EdgeInsets.symmetric(vertical: 20.0,horizontal: 36.0),
+        child:
+    SingleChildScrollView(
+    child:
+    Column(
+      children: [
+
+        image(),
+        const TransparentDivider(
+          height: 8.0,
+        ),
+        description(),
+        const TransparentDivider(
+          height: 24,
+        ),
+        inputUsername(),
+        const TransparentDivider(
+          height: 4,
+        ),
+        inputPassword(),
+        const TransparentDivider(
+          height: 12,
+        ),
+        // rememberMe(),
+        // const TransparentDivider(
+        //   height: 2,
+        // ),
+        signInButton(),
+        const TransparentDivider(
+          height: 16,
+        ),
+        forgotPasswordButton(),
+        const TransparentDivider(
+          height: 16,
+        ),
+        divider(),
+        const TransparentDivider(
+          height: 24,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            signInFacebookButton(),
+            signInGoogleButton(),
+            signInAppleButton(),
+          ],
+        ),
+        const TransparentDivider(
+          height: 32,
+        ),
+        registerButton(),
+        const TransparentDivider(
+          height: 32,
+        ),
+      ],
+    )),
+    )
+    );
   }
 
   Widget tabletBody() {
